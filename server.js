@@ -15,9 +15,8 @@ const categoryRoutes = require("./routes/categoryRoutes.js");
 const stockMovementRoutes = require("./routes/stockMovementRoutes.js");
 const customerRoutes = require("./routes/customerRoutes.js");
 const dashboardRoutes = require("./routes/dashboardRoutes.js");
-const orderRoutes = require('./routes/orderRoutes');
-const salesRoutes = require('./routes/salesRoutes');
-
+const orderRoutes = require("./routes/orderRoutes");
+const salesRoutes = require("./routes/salesRoutes");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler.js");
@@ -48,9 +47,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/stock-movements", stockMovementRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/sales', salesRoutes);
-
+app.use("/api/orders", orderRoutes);
+app.use("/api/sales", salesRoutes);
 
 // Error handler middleware
 app.use(errorHandler);
@@ -75,4 +73,13 @@ process.on("unhandledRejection", (err) => {
   console.log("UNHANDLED REJECTION! Shutting down...");
   console.error(err.name, err.message);
   process.exit(1);
+});
+
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Server is running",
+    environment: process.env.NODE_ENV || "development",
+  });
 });
