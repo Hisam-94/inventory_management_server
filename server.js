@@ -1,8 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const path = require("path");
-const { fileURLToPath } = require("url");
 const dotenv = require("dotenv");
 
 // Configure environment variables
@@ -20,25 +18,27 @@ const salesRoutes = require("./routes/salesRoutes");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler.js");
+const connectDB = require("./config/db.js");
 
-// Get current file directory (ESM equivalent of __dirname)
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Enable CORS
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Connect to database
+connectDB();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Connect to MongoDB
-mongoose
-  .connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/inventory-management"
-  )
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
 app.use("/api/auth", authRoutes);
