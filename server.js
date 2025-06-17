@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
@@ -26,7 +25,7 @@ const app = express();
 // Enable CORS
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : ["https://admin.computinghome.com", "https://computinghome.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -51,15 +50,6 @@ app.use("/api/sales", salesRoutes);
 
 // Error handler middleware
 app.use(errorHandler);
-
-// Serve static assets in production
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, "dist")));
-
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-//   });
-// }
 
 const PORT = process.env.PORT || 5000;
 
