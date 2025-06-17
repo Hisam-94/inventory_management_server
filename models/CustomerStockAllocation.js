@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { use } = require("react");
 
 const CustomerStockAllocationSchema = new mongoose.Schema({
   customerId: {
